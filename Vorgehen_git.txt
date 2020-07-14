@@ -1,0 +1,110 @@
+// Erste Mal anmelden bei github (Das ist nur notwendig, falls ich es auf gitHub posten möchte)
+
+// Computer mit dem github account verbinden
+ssh-keygen -t rsa -C 'steffen-hess@live.de'     >> move the files into /home/steffen/.ssh
+// copy the publix key into the settings in github
+
+
+
+git remote add origin https://github.com/Momba2212/myChtMultiRegionFoam.git       // verbinde diesen Ordner(Konsole) mit diesem Repository
+
+// ******************************************************************* //
+
+
+// git ist lokal auf meinem Rechner und hat zunächst einmal nichts mit github zu tun
+
+git init            // braucht man einfach immer >> erzeugt .git
+
+
+// Falls noch kein File Vorhanden ist, bzw. auswählen welche Dokumente hochgeladen werden sollen 
+git add ReadMe.md
+git status
+git log
+git commit -m "Kommentar zu diesem Upload"
+git push -u origin BRANCHNAME (master oder einen anderen Branch)        // kopieren des Files in den gewünschten Branch  >>> push ist dafür da, um es auf gitHub zu veröffentlichen!
+
+
+
+//  aktualisieren/herunterziehen von git
+git pull origin BRANCHNAME
+
+
+
+
+// Nutzen von anderen Branchen (Zweige) >> will ja nicht auf dem master arbeiten
+git branch neuer_branch
+git checkout neuer_branch                   // wechseln des branches. Files in dem Ordner ändern sich dann auch entsprechend
+
+#============Was will ich machen: Löschen der REadMe auf neuer_branch =========#
+git rm README.md
+...
+...
+git add ...
+
+# ============== Committen (übergeben) der gewünschten Änderungen =============#
+git commit -m "Löschen der ReadMe-Datei"
+
+
+
+# Löschen eines Branches 
+git branch -d neuer_branch
+
+
+
+
+>>>>>>>         git push --set-upstream origin BRANCHENAME                              // um alles zu übernehmen
+
+
+
+
+
+
+// Beispiel Upload einer Datei in den Branch     neuer_branch
+    
+git add File.txt                                    // aussuchen welche files ich committen (übergeben will)
+git status
+git log
+git commit -m "Kommentar"
+git push --set-upstream origin neuer_branch                 >>> push ist dafür da, um es auf gitHub zu veröffentlichen!
+
+
+
+
+
+
+// Synchronisieren von zwei Branches : Befinde mich bspw. im Master Branche (git checkout master)
+git merge neuer_branch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Mergen von Master
+
+
+
+
+
+
+git status
+git reset           // löscht alle in die immaginäre Liste aufgenommene Files
+git add Git.txt
+git add *
+
+git commit -m "Added two files"         (Ist die Beschreibung, was ich gemacht habe)
+
+git log (neuste commit steht oben)
