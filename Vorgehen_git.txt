@@ -76,6 +76,8 @@ git merge neuer_branch
  // ======================================= Alle commandos =============================== //
  
 git init 
+git pull        - setzt sich zusammen aus "fetch" und "merge" 
+git clone
 git remote add origin https://github.com/Momba2212/myChtMultiRegionFoam.git 
 git add fileName(s)
 git status
