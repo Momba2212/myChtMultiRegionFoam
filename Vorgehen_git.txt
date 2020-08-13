@@ -9,6 +9,15 @@ ssh-keygen -t rsa -C 'steffen-hess@live.de'     >> move the files into /home/ste
 git remote add origin https://github.com/Momba2212/myChtMultiRegionFoam.git       // verbinde diesen Ordner(Konsole) mit diesem Repository
                                                                                 // remote ist der Ordner, in welchem das Projekt auf github liegt
                                                                                 // origin ist dann ein alias für https://github.com/Momba2212/myChtMultiRegionFoam.git
+                                                                                
+                                                                                
+ Using a fork: Copy of a gitHub project, where I dont have write access
+ 
+ git remote add upstream https://github.com/pfad/../..                      // upstream ist ein alias für den Pfad
+ git clone                  this shit and work on it
+ git fetch upstream master
+ git merge upstream master
+                                                                        
 
 // ******************************************************************* //
 
@@ -89,7 +98,7 @@ git branch NEWBRANCH
 git checkout branchName
 git log
 git commit -m "Mit welcher Nachricht die files commitet werden sollen"
-git push  origin branchename  
+git push origin branchename  
 git merge neuer_branch
 git pull origin BRANCHNAME
 git rm VonEinerDateiImAktuellenBranch
