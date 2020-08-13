@@ -6,7 +6,7 @@ ssh-keygen -t rsa -C 'steffen-hess@live.de'     >> move the files into /home/ste
 
 
 
-git remote add origin https://github.com/Momba2212/myChtMultiRegionFoam.git       // verbinde diesen Ordner(Konsole) mit diesem Repository
+git remote add origin https://github.com/Momba2212/myChtMultiRegionFoam.git       // verbinde diesen Ordner(Konsole) mit diesem Repository > ist nen alias zu dem Ort der repository auf gitHub
 
 // ******************************************************************* //
 
@@ -55,10 +55,6 @@ git branch -d neuer_branch
 >>>>>>>         git push --set-upstream origin BRANCHENAME                              // um alles zu übernehmen
 
 
-
-
-
-
 // Beispiel Upload einer Datei in den Branch     neuer_branch
     
 git add File.txt                                    // aussuchen welche files ich committen (übergeben will)
@@ -66,9 +62,6 @@ git status
 git log
 git commit -m "Kommentar"
 git push --set-upstream origin neuer_branch                 >>> push ist dafür da, um es auf gitHub zu veröffentlichen!
-
-
-
 
 
 
@@ -80,25 +73,28 @@ git merge neuer_branch
 
 
 
-
-
-
-
-
-
-
-
-
+ // ======================================= Alle commandos =============================== //
+ 
+git init 
+git remote add origin https://github.com/Momba2212/myChtMultiRegionFoam.git 
+git clone
+git add fileName(s)
+git status
+git reset
+git branch -d BRANCHNAME
+git branch NEWBRANCH
+git checkout branchName
+git log
+git commit -m "Mit welcher Nachricht die files commitet werden sollen"
+git push --set-upstream origin neuer_branch  
+git merge neuer_branch
+git pull origin BRANCHNAME
+git rm VonEinerDateiImAktuellenBranch
 
 
 
 
 // Mergen von Master
-
-
-
-
-
 
 git status
 git reset           // löscht alle in die immaginäre Liste aufgenommene Files
@@ -107,4 +103,11 @@ git add *
 
 git commit -m "Added two files"         (Ist die Beschreibung, was ich gemacht habe)
 
+<<<<<<< Updated upstream
 git log (neuste commit steht oben)
+=======
+
+- wenn ich auf github einen pull request mache (andere sollen es kommentieren) und dann den branch develop mit dem hierArbeiten merge, und dann develop nach github pushe, verschwindet der pull request !!
+
+
+>>>>>>> Stashed changes
