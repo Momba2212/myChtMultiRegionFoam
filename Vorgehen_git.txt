@@ -7,6 +7,8 @@ ssh-keygen -t rsa -C 'steffen-hess@live.de'     >> move the files into /home/ste
 
 
 git remote add origin https://github.com/Momba2212/myChtMultiRegionFoam.git       // verbinde diesen Ordner(Konsole) mit diesem Repository
+                                                                                // remote ist der Ordner, in welchem das Projekt auf github liegt
+                                                                                // origin ist dann ein alias für https://github.com/Momba2212/myChtMultiRegionFoam.git
 
 // ******************************************************************* //
 
@@ -87,7 +89,7 @@ git branch NEWBRANCH
 git checkout branchName
 git log
 git commit -m "Mit welcher Nachricht die files commitet werden sollen"
-git push --set-upstream origin neuer_branch  
+git push  origin branchename  
 git merge neuer_branch
 git pull origin BRANCHNAME
 git rm VonEinerDateiImAktuellenBranch
