@@ -19,7 +19,7 @@ git init            // braucht man einfach immer >> erzeugt .git
 // Falls noch kein File Vorhanden ist, bzw. auswählen welche Dokumente hochgeladen werden sollen 
 git add ReadMe.md
 git status
-git log
+git log                                             // alias graph='git log --all --decorate --oneline --graph'
 git commit -m "Kommentar zu diesem Upload"
 git push -u origin BRANCHNAME (master oder einen anderen Branch)        // kopieren des Files in den gewünschten Branch  >>> push ist dafür da, um es auf gitHub zu veröffentlichen!
 
