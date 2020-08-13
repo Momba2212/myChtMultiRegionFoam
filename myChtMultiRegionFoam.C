@@ -42,7 +42,7 @@ Description
 #include "fvCFD.H"
 
 
-#include "regionProperties.H"
+#include "regionProperties.H"       // creates the IOdictionary object, which reads out createRegionProperties
 
 
 
@@ -60,20 +60,130 @@ int main (int argc, char* argv[])               // argv[0] = ./executionName arg
     );
     
     #define NO_CONTROL
-    #define CREATE_MESH createMeshesPostProcess.H
+  #define CREATE_MESH createMeshesPostProcess.H
     #include "postProcess.H"    
     
     #include "setRootCaseList.H"             // This is setRootCase, but with additional solver-related listing
     #include "createTime.H"
-#include "createMeshes.H"
+    #include "createMeshes.H"               //  create fvMesh für die aus regionProperties.H gelesenen Regions!             
+                                            // regionPropertiesDict    fluid   (air porous)
+                                            // regionPropertiesDict    solid   (stein holz)
+    #include "createFields.H"               // instanziiert die Größen auf dem Gitter
+
+    #include "initContinuityErrs.H"         // ???
+    #include "createTimeControls.H"         // global readTimeControls from the controlDict and sets the maxCo (Corount number)
+    #include "readSolidTimeControls.H"      // Read the control parameters used in the solid    maxDi (diffusion number = stabilize the calculation like the Courant number)
+    #include "compressibleMultiRegionCourantNo.H"       // global: setzt die Courant number für alle anderen Fluid regions
+    #include "solidRegionDiffusionNo.H"                 // global: sets the diffusion coefficients for all solid regions
+    #include "setInitialMultiRegionDeltaT.H"
     
+    
+    // The actual solving algorithm looks like this
+    
+    while (runTime.run())
+    {
+        #include "readTimeControls.H"          // Read the control parameters used by setDeltaT 
+//        #include "readSolidTimeControls.H"     // nochmal maxDi definieren > ist nicht nötig
+        #include "readPIMPLEControls.H"         // reads the fvSolutionDict for the pimple settings:   dictionary& pimple
+        
+//        #include "compressibleMultiRegionCourantNo.H"   // global: sets the courant number (Again)
+//        #include "solidRegionDiffusionNo.H"               // global: sets the diffusion number for the solid region
+        #include "setMultiRegionDeltaT.H"       // global: Reset the timestep to maintain a constant maximum Courant numbers.
+                                                //Reduction of time-step is immediate, but increase is damped to avoid unstable oscillations
+    
+    ++runTime;                                  // begin with the first timeStep
+    
+    Info << "Time = " << runTime.timeName() << nl << endl;
+    
+    if (nOuterCorr != 1)
+    {
+        forAll(fluidRegiuons,  i)
+        {
+            #include "storeOldFluidFields.H"       //  p_rghFluid[i].storePrevIter();
+        }
+    }
+    
+    
+    // -- PIMPLE loop
+    for (int oCorr=0; oCorr<nOuterCorr; ++oCorr)
+    {
+        const bool finalIter = (oCorr == nOuterCorr-1);     // sets finalIter to 1, if final iteration loop
+        
+        // Solve fluid regions
+        forAll(fluidRegions, i)                                // fluidRegions ist eine Liste (genau einePtrList)
+        {
+            Info<< "\nSolving for fluid region " << fluidRegions[i].name() << endl; 
+            
+            #include "setRegionFluidFields.H"           // gelöst wird immer auf dem mesh  fvMesh& mesh = fluidRegions[i];  >> muss hier die Fields von den 
+            #include "readFluidMultiRegionPIMPLEControls.H" // 
+            #include "solveFluid.H"
+        }
+        
+        
+        // Solve solid regions
+        forAll(solidRegions, i)
+        {
+            Info<< "Solving for solid region " << solidRegions[i] << endl;
+            
+            #include "setRegionSolidFields.H"   
+            #include "readSolidMultiRegionPIMPLEControls.H"
+            #include "solveSolid.H"
+        }
+        
+        // Additional loops for energy solution only 
+        if (!oCorr && nOuterCorr > 1)
+        {
+                loopControl looping(runTime, pimple, "energyCoupling");
 
+                while (looping.loop())
+                {
+                    Info<< nl << looping << nl;
 
+                    forAll(fluidRegions, i)
+                    {
+                        Info<< "\nSolving for fluid region "
+                            << fluidRegions[i].name() << endl;
+                       #include "setRegionFluidFields.H"
+                       #include "readFluidMultiRegionPIMPLEControls.H"
+                       frozenFlow = true;
+                       #include "solveFluid.H"
+                    }
 
-
-
-
-
+                    forAll(solidRegions, i)
+                    {
+                        Info<< "\nSolving for solid region "
+                            << solidRegions[i].name() << endl;
+                        #include "setRegionSolidFields.H"
+                        #include "readSolidMultiRegionPIMPLEControls.H"
+                        #include "solveSolid.H"
+                    }
+                }
+            }
+        }   
+        
+        runTime.write();
+        
+        runTime.printExecutionTime(Info);
+    }
+    
+    
+    // Changes for Git
+    
+    int a = 5;
+    if(a==5)
+    {
+        Info<< "Hallo, a ist gleich 5 " << endl;
+    }
+    
+    Info<< "End\n" << endl;
+    
+    return 0;
+    
+    
+}
+    
+    
+    
 
 
 
